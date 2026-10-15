@@ -1,0 +1,401 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: #07030e;
+    --foreground: #f3e8ff;
+    --accent-cyan: #22d3ee;
+    --accent-purple: #c084fc;
+    --accent-emerald: #10b981;
+    --accent-amber: #f59e0b;
+    --accent-rose: #ef4444;
+  }
+}
+
+html, body {
+  background-color: #07030e;
+  color: #f3e8ff;
+  font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── HUD Animations ──────────────────────────────────────────── */
+@keyframes neon-breathing {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.7)) drop-shadow(0 0 25px rgba(192, 132, 252, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 18px rgba(168, 85, 247, 1)) drop-shadow(0 0 38px rgba(192, 132, 252, 0.7));
+  }
+}
+
+@keyframes spin-cw {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-ccw {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes scan-line {
+  0% { top: -10%; }
+  100% { top: 110%; }
+}
+
+@keyframes flicker {
+  0%, 95%, 100% { opacity: 1; }
+  96% { opacity: 0.85; }
+  97% { opacity: 1; }
+  98% { opacity: 0.9; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes draw-path {
+  from { stroke-dashoffset: 1000; }
+  to { stroke-dashoffset: 0; }
+}
+
+.animate-neon-breathing {
+  animation: neon-breathing 3.5s ease-in-out infinite;
+}
+
+.animate-spin-cw {
+  animation: spin-cw 22s linear infinite;
+}
+
+.animate-spin-ccw {
+  animation: spin-ccw 16s linear infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.4s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+.animate-flicker {
+  animation: flicker 8s ease-in-out infinite;
+}
+
+/* ── Glassmorphism HUD Panels ────────────────────────────────── */
+.hud-panel {
+  background: rgba(14, 6, 28, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(168, 85, 247, 0.28);
+  box-shadow:
+    0 0 25px rgba(112, 26, 219, 0.12),
+    inset 0 0 15px rgba(168, 85, 247, 0.04);
+}
+
+.hud-panel:hover {
+  border-color: rgba(192, 132, 252, 0.5);
+  box-shadow:
+    0 0 30px rgba(112, 26, 219, 0.22),
+    inset 0 0 20px rgba(168, 85, 247, 0.07);
+  transition: all 0.25s ease;
+}
+
+.hud-panel-glow {
+  box-shadow:
+    0 0 30px rgba(168, 85, 247, 0.35),
+    0 0 60px rgba(112, 26, 219, 0.15),
+    inset 0 0 20px rgba(168, 85, 247, 0.08);
+}
+
+/* ── Cyber / Angular Chamfered Borders ─────────────────────── */
+.chamfer-box {
+  clip-path: polygon(
+    0 14px,
+    14px 0,
+    calc(100% - 14px) 0,
+    100% 14px,
+    100% calc(100% - 14px),
+    calc(100% - 14px) 100%,
+    14px 100%,
+    0 calc(100% - 14px)
+  );
+}
+
+.chamfer-card-tl-br {
+  clip-path: polygon(
+    0 16px,
+    16px 0,
+    100% 0,
+    100% calc(100% - 16px),
+    calc(100% - 16px) 100%,
+    0 100%
+  );
+}
+
+/* ── Scanline Overlay Effect ────────────────────────────────── */
+.scanline-overlay {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanline-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(168, 85, 247, 0.015) 3px,
+    rgba(168, 85, 247, 0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Moving scanline beam */
+.scanline-beam::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.15), transparent);
+  animation: scan-line 6s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Grid Background Pattern ────────────────────────────────── */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(168, 85, 247, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 85, 247, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ── Neon Text Glows ─────────────────────────────────────────── */
+.glow-purple {
+  text-shadow: 0 0 12px rgba(192, 132, 252, 0.9), 0 0 24px rgba(168, 85, 247, 0.6);
+}
+
+.glow-cyan {
+  text-shadow: 0 0 12px rgba(34, 211, 238, 0.9), 0 0 24px rgba(6, 182, 212, 0.6);
+}
+
+.glow-white {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.9), 0 0 20px rgba(192, 132, 252, 0.6);
+}
+
+.glow-emerald {
+  text-shadow: 0 0 10px rgba(52, 211, 153, 0.9), 0 0 20px rgba(16, 185, 129, 0.6);
+}
+
+/* ── Typography ──────────────────────────────────────────────── */
+.font-orbitron {
+  font-family: 'Orbitron', monospace;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* ── Status Indicator Dots ──────────────────────────────────── */
+.status-dot {
+  position: relative;
+}
+
+.status-dot::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: inherit;
+  animation: pulse-ring 1.8s ease-out infinite;
+}
+
+/* ── Custom Scrollbar ───────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(168, 85, 247, 0.06);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.35);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(192, 132, 252, 0.6);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(168, 85, 247, 0.35) rgba(168, 85, 247, 0.06);
+}
+
+/* ── Button Hover Effects ────────────────────────────────────── */
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent 50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.btn-glow:hover::before {
+  opacity: 1;
+}
+
+/* ── Step Card Entrance Animation ───────────────────────────── */
+.step-card-enter {
+  animation: slide-up 0.35s ease-out forwards;
+}
+
+.step-card-enter:nth-child(1) { animation-delay: 0ms; }
+.step-card-enter:nth-child(2) { animation-delay: 80ms; }
+.step-card-enter:nth-child(3) { animation-delay: 160ms; }
+.step-card-enter:nth-child(4) { animation-delay: 240ms; }
+.step-card-enter:nth-child(5) { animation-delay: 320ms; }
+
+/* ── Orbiting Ring ──────────────────────────────────────────── */
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(140px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(140px) rotate(-360deg); }
+}
+
+.animate-orbit {
+  animation: orbit 8s linear infinite;
+}
+
+.animate-orbit-reverse {
+  animation: orbit 10s linear infinite reverse;
+}
+
+/* ── Floating Animation ──────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* ── Progress Bar ───────────────────────────────────────────── */
+@keyframes progress-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(168, 85, 247, 0.4); }
+  50% { box-shadow: 0 0 16px rgba(168, 85, 247, 0.8); }
+}
+
+/* ── Focus States ───────────────────────────────────────────── */
+input:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  outline: 2px solid rgba(168, 85, 247, 0.7);
+  outline-offset: 2px;
+  border-color: rgba(192, 132, 252, 0.6);
+}
+
+/* ── Transition Defaults ─────────────────────────────────────── */
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Jarvis Core Reactive Rings ──────────────────────────────── */
+@keyframes core-listen {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.06); opacity: 0.9; }
+}
+
+@keyframes core-speak {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+@keyframes core-sweep {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.core-reacting-listen {
+  animation: core-listen 1.1s ease-in-out infinite;
+}
+
+.core-reacting-speak {
+  animation: core-speak 0.6s ease-in-out infinite;
+}
+
+.core-sweep {
+  animation: core-sweep 4s linear infinite;
+}
+
+/* ── Modal Entrance ──────────────────────────────────────────── */
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-modal-in {
+  animation: modal-in 0.22s ease-out forwards;
+}
+
+/* ── Screen Reader Only ──────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ── Mobile workspace scrolling ──────────────────────────────── */
+.workspace-scroll {
+  scrollbar-gutter: stable;
+}
+
+/* ── Reduced Motion ──────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

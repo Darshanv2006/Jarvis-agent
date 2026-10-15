@@ -1,0 +1,17 @@
+[
+  {
+    "id": "evt-1792063177934",
+    "title": "Security Review Meeting",
+    "startTime": "2026-10-16T08:30:00.000Z",
+    "endTime": "2026-10-16T09:30:00.000Z",
+    "description": "Auto-scheduled by JARVIS Human-Like Co-Pilot from request: \"Schedule security review meeting from email alert\"",
+    "location": "Google Meet"
+  },
+  {
+    "id": "evt-1792063363716",
+    "title": "Technical Interview",
+    "startTime": "2026-10-15T08:30:00.000Z",
+    "endTime": "2026-10-15T09:30:00.000Z",
+    "location": "Google Meet"
+  }
+]

@@ -1,0 +1,12 @@
+[project]
+name = "assistant-c37"
+version = "0.1.0"
+description = "LiveKit Voice Agent for Deadline Wrangler"
+requires-python = ">=3.10"
+dependencies = [
+    "livekit-agents>=1.8.8",
+    "livekit-plugins-openai>=1.8.8",
+    "livekit-plugins-silero>=1.8.8",
+    "python-dotenv>=1.0.0",
+    "requests>=2.31.0",
+]

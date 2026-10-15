@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+*/node_modules/
+.pnp
+.pnp.js
+
+# Virtual Environments (Python)
+venv/
+*/venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+
+# Next.js Build Cache & Outputs
+.next/
+*/.next/
+out/
+build/
+dist/
+
+# Environment Variables & Secrets (CRITICAL)
+.env
+.env.*
+!.env.example
+!*/.env.example
+
+# IDE & OS Artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Turbopack & TypeScript
+*.tsbuildinfo
+next-env.d.ts
